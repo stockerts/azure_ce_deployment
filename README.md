@@ -1,19 +1,14 @@
-Azure Deployment Guide
+# Azure Deployment Guide
 
-Overview
-
+## Overview
 This repository contains scripts and configuration files to deploy a Virtual Machine (VM) in Microsoft Azure using the Azure CLI. The deployment includes:
+- A Public IP address
+- A Virtual Network Interface Card (NIC)
+- A VM with F5 XC CE image
+- A cloud-init configuration for automated provisioning
 
-A Public IP address
-
-A Virtual Network Interface Card (NIC)
-
-A VM with F5 XC CE image
-
-A cloud-init configuration for automated provisioning
-
-Project Structure
-
+## Project Structure
+```
 azure-deployment/
 │── scripts/
 │   ├── deploy-vm.sh          # Main deployment script
@@ -22,30 +17,27 @@ azure-deployment/
 │── cloud-init/
 │   ├── cloud-init.yaml       # Cloud-init configuration
 │── README.md                 # Documentation
+```
 
-Prerequisites
-
+## Prerequisites
 Before running the deployment script, ensure you have:
+- An active **Azure subscription**
+- **Azure CLI** installed (`az` command available)
+- Proper **permissions** to create resources in Azure
+- A **SSH key pair** available for authentication
 
-An active Azure subscription
+## Setup & Running the Deployment
 
-Azure CLI installed (az command available)
-
-Proper permissions to create resources in Azure
-
-A SSH key pair available for authentication
-
-Setup & Running the Deployment
-
-1. Clone the Repository
-
+### 1. Clone the Repository
+```sh
 git clone https://github.com/yourusername/azure-deployment.git
 cd azure-deployment
+```
 
-2. Update the Variables
+### 2. Update the Variables
+Modify the `configs/azure-vars.sh` file to match your environment.
 
-Modify the configs/azure-vars.sh file to match your environment.
-
+```sh
 #!/bin/bash
 
 # Base resource name
@@ -69,13 +61,13 @@ LOCATION="westus2"
 
 # Cloud-init configuration
 CLOUD_INIT_FILE="cloud-init/cloud-init.yaml"
+```
 
-3. Update Cloud-init Configuration (Optional)
-
-Modify cloud-init/cloud-init.yaml to customize the VM initialization.
+### 3. Update Cloud-init Configuration (Optional)
+Modify `cloud-init/cloud-init.yaml` to customize the VM initialization.
 
 Example:
-
+```yaml
 #cloud-config
 write_files:
   - path: /etc/vpm/user_data
@@ -85,28 +77,38 @@ write_files:
       token: your-token-number
       #slo_ip: Un-comment and set Static IP/mask for SLO if needed.
       #slo_gateway: Un-comment and set default gateway for SLO when static IP is needed.
+```
 
-4. Run the Deployment Script
-
+### 4. Run the Deployment Script
 Make sure the script is executable, then run it:
-
+```sh
 chmod +x scripts/deploy-vm.sh
 ./scripts/deploy-vm.sh
+```
 
-5. Verify Deployment
-
+### 5. Verify Deployment
 Once the script completes, check the Azure portal or use the Azure CLI to verify that the resources were created successfully.
-
+```sh
 az vm list -d --output table
+```
 
-Troubleshooting
+## Troubleshooting
+- If authentication fails, verify your Azure CLI login:
+  ```sh
+  az login
+  ```
+- If a resource already exists, modify `NODE_NUM` or delete existing resources:
+  ```sh
+  az group delete --name your-compute-resource-group --yes --no-wait
+  ```
+- Check the Azure activity logs for deployment errors in the portal.
 
-If authentication fails, verify your Azure CLI login:
+## Next Steps
+- **Automate** deployment with GitHub Actions
+- **Integrate** with Terraform for Infrastructure as Code (IaC)
 
-az login
+For any issues, please open an issue on GitHub!
 
-If a resource already exists, modify NODE_NUM or delete existing resources:
+---
+© 2025 Your Company. All rights reserved.
 
-az group delete --name your-compute-resource-group --yes --no-wait
-
-Check the Azure activity logs for deployment errors in the portal.
