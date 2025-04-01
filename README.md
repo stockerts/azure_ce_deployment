@@ -11,12 +11,12 @@ This repository contains scripts and configuration files to deploy a Virtual Mac
 ```
 azure-deployment/
 │── scripts/
-│   ├── deploy-vm.sh          # Main deployment script
+│   ├── deploy-azure-resources.sh           # Main deployment script
 │── configs/
-│   ├── azure-vars.sh         # Variables file
+│   ├── azure-vars.sh                       # Variables file
 │── cloud-init/
-│   ├── cloud-init.yaml       # Cloud-init configuration
-│── README.md                 # Documentation
+│   ├── cloud-init.yaml                     # Cloud-init configuration
+│── README.md                               # Documentation
 ```
 
 ## Prerequisites
@@ -82,8 +82,8 @@ write_files:
 ### 4. Run the Deployment Script
 Make sure the script is executable, then run it:
 ```sh
-chmod +x scripts/deploy-vm.sh
-./scripts/deploy-vm.sh
+chmod +x scripts/deploy-azure-resources.sh
+./scripts/deploy-azure-resources.sh
 ```
 
 ### 5. Verify Deployment
